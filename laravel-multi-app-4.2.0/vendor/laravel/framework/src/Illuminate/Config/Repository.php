@@ -48,7 +48,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess {
 	 * @param  string  $environment
 	 * @return void
 	 */
-	public function __construct(LoaderInterface $loader, $environment)
+	public function __construct(LoaderInterface $loader = null, $environment = null)
 	{
 		$this->loader = $loader;
 		$this->environment = $environment;

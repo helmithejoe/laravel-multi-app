@@ -1,6 +1,18 @@
 <?php
 
-$basePath = $app['path.base'];
+/* fix php artisan optimize for the multi-app */
+
+$getVendorBasePath = function () {
+    $typicalCoreClass     = 'Illuminate\Config\Repository';
+    $typicalCoreClassPath = str_replace('/', DIRECTORY_SEPARATOR, '/vendor/laravel/framework/src/Illuminate/Config/Repository.php');
+    $realClassPath = (new ReflectionObject(new $typicalCoreClass))->getFileName();
+    return strpos($realClassPath, $typicalCoreClassPath) ?
+        substr($realClassPath, 0, (strlen($realClassPath) - strlen($typicalCoreClassPath))) :
+        preg_replace('/\/vendor\/compiled\.php$/', '', $realClassPath);
+};
+$basePath = $getVendorBasePath();
+
+/* end of fix */
 
 return array_map('realpath', [
     $basePath.'/vendor/laravel/framework/src/Illuminate/Contracts/Container/Container.php',
